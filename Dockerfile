@@ -3,12 +3,14 @@
 
 FROM python:3.10-slim
 
-RUN pip install \
-    dagster \
-    dagster-graphql \
-    dagster-webserver \
-    dagster-postgres \
-    dagster-docker
+
+
+# RUN pip install \
+#     dagster \
+#     dagster-graphql \
+#     dagster-webserver \
+#     dagster-postgres \
+#     dagster-docker
 
 # Set $DAGSTER_HOME and copy dagster instance and workspace YAML there
 ENV DAGSTER_HOME=/opt/dagster/dagster_home/
@@ -23,10 +25,10 @@ WORKDIR $DAGSTER_HOME
 # COPY dagster.yaml workspace.yaml .
 COPY dagster_project ./dagster_project
 COPY dbt_project ./dbt_project
-
 COPY pyproject.toml .
 COPY setup.cfg .
 COPY setup.py .
+COPY requirements.txt .
 
 RUN apt-get update -y && apt-get install -y 
 RUN pip3 install -r requirements.txt
