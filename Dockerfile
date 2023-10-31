@@ -20,7 +20,7 @@ COPY dagster.yaml workspace.yaml $DAGSTER_HOME
 WORKDIR $DAGSTER_HOME
 
 # Copy our code and workspace to /usr/src/app
-COPY dagster.yaml workspace.yaml .
+# COPY dagster.yaml workspace.yaml .
 COPY dagster_project ./dagster_project
 COPY dbt_project ./dbt_project
 
