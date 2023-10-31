@@ -35,10 +35,8 @@ availableSecrets:
 options:
   dynamic_substitutions: true
 images:
-  - '${_REGISTRY_BASE}/models:$SHORT_SHA'
-  - '${_REGISTRY_BASE}/models:${_SAFE_BRANCH}'
-  - '${_REGISTRY_BASE}/dagster-image:$SHORT_SHA'
-  - '${_REGISTRY_BASE}/dagster-image:${_SAFE_BRANCH}'
+  - '${_REGISTRY_BASE}/dagster-project:$SHORT_SHA'
+  - '${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}'
 timeout: 500s
 substitutions:
   _SAFE_BRANCH: ${BRANCH_NAME//\//-}
