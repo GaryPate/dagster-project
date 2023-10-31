@@ -7,3 +7,4 @@ dagster-graphql==1.5.5
 dagster-webserver==1.5.5
 dbt-bigquery==1.6.7
 textblob==0.17.1
+tweepy==4.14.0
