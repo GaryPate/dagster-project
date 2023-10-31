@@ -13,9 +13,9 @@ FROM python:3.10-slim
 #     dagster-docker
 
 # Set $DAGSTER_HOME and copy dagster instance and workspace YAML there
-ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ENV DAGSTER_HOME=/opt/dagster/dagster-project/
 
-RUN mkdir -p $DAGSTER_HOME
+# RUN mkdir -p $DAGSTER_HOME
 
 COPY dagster.yaml workspace.yaml $DAGSTER_HOME
 
