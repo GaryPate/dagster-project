@@ -28,6 +28,9 @@ COPY pyproject.toml .
 COPY setup.cfg .
 COPY setup.py .
 
+RUN apt-get update -y && apt-get install -y 
+RUN pip3 install -r requirements.txt
+RUN python -m textblob.download_corpora 
 
 EXPOSE 3000
 

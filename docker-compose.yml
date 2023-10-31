@@ -1,17 +1,11 @@
 services:
 
   dagster-webserver:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project
     ports:
       - 3000:3000
 
   dagster-daemon:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project
     command: "dagster-daemon run"
     # environment:
