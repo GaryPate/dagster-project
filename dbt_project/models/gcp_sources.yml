@@ -1,0 +1,28 @@
+version: 2
+
+version: 2
+
+sources:
+  - name: SENTIMAX
+    tables:
+    - name: tweet_data  # enabled
+      columns: 
+        - name: id
+        - name: text
+
+    - name: sentiment_staging  # enabled
+      columns: 
+        - name: id
+        - name: text
+        - name: sentiment
+        - name: load_datetime
+
+    - name: st02_tweet_json_to_bq
+      meta:
+        dagster:
+          asset_key: ["st02_tweet_json_to_bq"]
+
+    - name: st04_calc_sentiment
+      meta:
+        dagster:
+          asset_key: ["st04_calc_sentiment"]
