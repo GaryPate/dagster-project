@@ -4,9 +4,8 @@
 FROM python:3.10-slim
 
 
-CMD ["mkdir" "/mnt/gcloud/"]
-CMD ["mkdir" "/mnt/dbt/"]
-
+RUN ["mkdir" "/mnt/gcloud/"]
+RUN ["mkdir" "/mnt/dbt/"]
 # RUN pip install \
 #     dagster \
 #     dagster-graphql \
