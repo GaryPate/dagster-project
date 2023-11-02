@@ -7,12 +7,15 @@ services:
     volumes:
       - ${HOME}/.dbt:/mnt/dbt
       - ${HOME}/.config/gcloud:/mnt/gcloud
-    command: >
-      sh -c export GCP_CREDS_JSON_CREDS_BASE64="$(cat /mnt/gcloud/application_default_credentials.json | base64)" &&
-            dagster-webserver
-  dagster-daemon:
-    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
-    command: "dagster-daemon run"
+    #environment:
+    #  - GCP_CREDS_JSON_CREDS_BASE64="$(cat /mnt/gcloud/application_default_credentials.json | base64)"
+    command: /bin/sh ./up.sh #["export GCP_CREDS_JSON_CREDS_BASE64='$(cat /mnt/gcloud/application_default_credentials.json | base64)'"]
+    entrypoint: ["dagster-webserver", "-w", "workspace.yaml", "-h", "0.0.0.0", "-p", "3000"]
+  # dagster-daemon:
+  #   image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
+  #   command: "dagster-daemon run"
+
+
     # environment:
     #   - PGPASS=${PGPASS}
     #   - PGUID=${PGUID}

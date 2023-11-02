@@ -31,6 +31,7 @@ COPY pyproject.toml .
 COPY setup.cfg .
 COPY setup.py .
 COPY requirements.txt .
+COPY up.sh .
 
 RUN apt-get update -y && apt-get install -y 
 RUN pip3 install -r requirements.txt
