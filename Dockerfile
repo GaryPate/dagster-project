@@ -14,7 +14,7 @@ FROM python:3.10-slim
 
 # Set $DAGSTER_HOME and copy dagster instance and workspace YAML there
 ENV DAGSTER_HOME=/opt/dagster/dagster-project/
-
+ENV DBT_TARGET_PATH=/opt/dagster/dagster-project/dbt_project/target/
 # RUN mkdir -p $DAGSTER_HOME
 
 COPY dagster.yaml workspace.yaml $DAGSTER_HOME
