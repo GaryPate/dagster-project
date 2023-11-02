@@ -17,6 +17,10 @@ ENV DAGSTER_HOME=/opt/dagster/dagster-project/
 ENV DBT_TARGET_PATH=/opt/dagster/dagster-project/dbt_project/target/
 ENV DBT_PROFILES_DIR=/opt/dagster/dagster-project/dbt_project/
 ENV GOOGLE_APPLICATION_CREDENTIALS=/mnt/gcloud/dagster_gcp_key.json
+
+# ENV DAGSTER_POSTGRES_USER=dagsteruser
+# ENV DAGSTER_POSTGRES_PASSWORD=dagsterpass
+ENV DAGSTER_POSTGRES_DB=dagsterdb
 # RUN mkdir -p $DAGSTER_HOME
 
 COPY dagster.yaml workspace.yaml $DAGSTER_HOME
@@ -39,7 +43,7 @@ RUN python -m textblob.download_corpora
 RUN mkdir /mnt/gcloud/
 # RUN mkdir /mnt/dbt/
 
-EXPOSE 3000
+EXPOSE 3100
 
 # CMD ["mkdir" "/mnt/gcloud/"]
 # CMD ["mkdir" "/mnt/dbt/"]
