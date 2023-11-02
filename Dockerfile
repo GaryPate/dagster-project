@@ -35,9 +35,12 @@ COPY requirements.txt .
 RUN apt-get update -y && apt-get install -y 
 RUN pip3 install -r requirements.txt
 RUN python -m textblob.download_corpora 
+RUN mkdir /mnt/gcloud/
+RUN mkdir /mnt/dbt/
 
 EXPOSE 3000
 
-CMD ["mkdir" "/mnt/gcloud/"]
-CMD ["mkdir" "/mnt/dbt/"]
-CMD ["dagster-webserver", "-w", "workspace.yaml", "-h", "0.0.0.0", "-p", "3000"]
+# CMD ["mkdir" "/mnt/gcloud/"]
+# CMD ["mkdir" "/mnt/dbt/"]
+
+# CMD ["dagster-webserver", "-w", "workspace.yaml", "-h", "0.0.0.0", "-p", "3000"]
