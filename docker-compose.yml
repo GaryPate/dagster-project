@@ -22,9 +22,27 @@ services:
              . ./up.sh &&  
              dagster-daemon run"
 
+  dagster-postgres:
+    image: postgres:13.3
+    ports:
+      - 5432:5432
+    
+    environment:
+      POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+
+    volumes:
+      - dagster-postgres:/var/lib/postgresql/data
+
+
   grafana:
     image: grafana/grafana-enterprise
     container_name: grafana
     restart: unless-stopped
     ports:
      - '3000:3000'
+
+volumes:
+  dagster-postgres:
+    driver: local
