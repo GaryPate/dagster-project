@@ -36,4 +36,6 @@ RUN python -m textblob.download_corpora
 
 EXPOSE 3000
 
+WORKDIR /opt/dagster/dagster-project/dagster_project/
+
 CMD ["dagster-webserver", "-w", "workspace.yaml", "-h", "0.0.0.0", "-p", "3000"]
