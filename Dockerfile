@@ -4,8 +4,7 @@
 FROM python:3.10-slim
 
 
-RUN ["mkdir" "/mnt/gcloud/"]
-RUN ["mkdir" "/mnt/dbt/"]
+
 # RUN pip install \
 #     dagster \
 #     dagster-graphql \
@@ -39,6 +38,6 @@ RUN python -m textblob.download_corpora
 
 EXPOSE 3000
 
-
-
+CMD ["mkdir" "/mnt/gcloud/"]
+CMD ["mkdir" "/mnt/dbt/"]
 CMD ["dagster-webserver", "-w", "workspace.yaml", "-h", "0.0.0.0", "-p", "3000"]
