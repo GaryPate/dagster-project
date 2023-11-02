@@ -1,16 +1,12 @@
-from dagster import Definitions, load_assets_from_modules
+from dagster import Definitions, load_assets_from_modules, define_asset_job, AssetSelection, FilesystemIOManager
 from dagster_gcp import BigQueryResource
-from .assets import semx_assets, get_dbt_assets
+from dagster_project.assets import semx_assets, get_dbt_assets
 import os
 import json 
 import base64
-
-import os
 from dagster_gcp_pandas import BigQueryPandasIOManager
-from dagster import Definitions
-from dagster_dbt import DbtCliResource
-from .constants import DBT_PROJECT_DIR
-from dagster import Definitions, define_asset_job
+from dagster_dbt import DbtCliResource, build_schedule_from_dbt_selection
+from dagster_project.constants import DBT_PROJECT_DIR
 
 
 from dagster import (
@@ -31,13 +27,28 @@ all_assets = load_assets_from_modules([semx_assets,
                                        get_dbt_assets
                                        ])
 
+sentimax_compute_job = define_asset_job("sentimax_compute_job", selection=AssetSelection.groups("sentimax_compute"))
 
-semx_asset_job = define_asset_job(name="semx_asset_job")
+# sentimax_dbt_job = define_asset_job(
+#     name="sentimax_dbt_job",
+#     selection=AssetSelection.groups('sentimax_dbt')
+#     # tags={
+#     #     "job": "sentimax_dbt_job"
+#     # },
+# )
 
 
+sentimax_dbt_assets_schedule = build_schedule_from_dbt_selection(
+    [get_dbt_assets.dagster_dbt_assets],
+    job_name="dbt_model_job",
+    cron_schedule="@daily",
+    dbt_select="tag:sentimax-dbt",
+)
 
 defs = Definitions(
     assets=all_assets,
+    jobs=[sentimax_compute_job],
+    schedules=[sentimax_dbt_assets_schedule],
     resources={
         "dbt": DbtCliResource(project_dir=DBT_PROJECT_DIR),
         "bigquery": BigQueryResource(
