@@ -4,7 +4,9 @@ services:
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
     ports:
       - 3000:3000
-
+    volumes:
+      - ${HOME}/.dbt:/mnt/dbt
+      - ${HOME}/.config/gcloud:/mnt/gcloud
   dagster-daemon:
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
     command: "dagster-daemon run"

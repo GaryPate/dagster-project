@@ -4,6 +4,8 @@
 FROM python:3.10-slim
 
 
+CMD ["mkdir" "/mnt/gcloud/"]
+CMD ["mkdir" "/mnt/dbt/"]
 
 # RUN pip install \
 #     dagster \
@@ -15,6 +17,8 @@ FROM python:3.10-slim
 # Set $DAGSTER_HOME and copy dagster instance and workspace YAML there
 ENV DAGSTER_HOME=/opt/dagster/dagster-project/
 ENV DBT_TARGET_PATH=/opt/dagster/dagster-project/dbt_project/target/
+ENV DBT_PROFILES_DIR=/mnt/dbt/
+ENV GOOGLE_APPLICATION_CREDENTIALS=/mnt/gcloud/dagster_gcp_key.json
 # RUN mkdir -p $DAGSTER_HOME
 
 COPY dagster.yaml workspace.yaml $DAGSTER_HOME
@@ -35,5 +39,7 @@ RUN pip3 install -r requirements.txt
 RUN python -m textblob.download_corpora 
 
 EXPOSE 3000
+
+
 
 CMD ["dagster-webserver", "-w", "workspace.yaml", "-h", "0.0.0.0", "-p", "3000"]
