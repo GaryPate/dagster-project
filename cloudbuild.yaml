@@ -14,29 +14,36 @@ steps:
   #   dir: '.'
   #   secretEnv: ['API_KEY', 'API_SECRET', 'ACCESS_TOKEN', 'ACCESS_SECRET', 'BEARER_TOKEN', 'CLIENT_ID', 'CLIENT_SECRET']
 
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'docker'
-    args:
-      - build
-      - -f
-      - dagster-postgres/Dockerfile
-      - -t
-      - ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA
-      - -t
-      - ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}
-      - --build-arg 
-      - PGUSER=${DAGSTER_POSTGRES_USER} #$$DAGSTER_POSTGRES_USER 
-      - --build-arg 
-      - PGPASS=${DAGSTER_POSTGRES_PASSWORD} #$$DAGSTER_POSTGRES_PASSWORD
-      #- -c
-      #- DAGSTER_POSTGRES_USER=$$DAGSTER_POSTGRES_USER DAGSTER_POSTGRES_PASSWORD=$$DAGSTER_POSTGRES_PASSWORD POSTGRES_PASSWORD=$$DAGSTER_POSTGRES_PASSWORD
-      - '.'
-    dir: '.'
-    # env:
-    #   - 'DAGSTER_POSTGRES_USER=$DAGSTER_POSTGRES_USER'
-    #   - 'DAGSTER_POSTGRES_PASSWORD=$DAGSTER_POSTGRES_PASSWORD'
-    secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   entrypoint: 'docker'
+  #   args:
+  #     - build
+  #     - -f
+  #     - dagster-postgres/Dockerfile
+  #     - -t
+  #     - ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA
+  #     - -t
+  #     - ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}
+  #     - --build-arg 
+  #     - PGUSER=${DAGSTER_POSTGRES_USER} #$$DAGSTER_POSTGRES_USER 
+  #     - --build-arg 
+  #     - PGPASS=${DAGSTER_POSTGRES_PASSWORD} #$$DAGSTER_POSTGRES_PASSWORD
+  #     #- -c
+  #     #- DAGSTER_POSTGRES_USER=$$DAGSTER_POSTGRES_USER DAGSTER_POSTGRES_PASSWORD=$$DAGSTER_POSTGRES_PASSWORD POSTGRES_PASSWORD=$$DAGSTER_POSTGRES_PASSWORD
+  #     - '.'
+  #   dir: '.'
+  #   # env:
+  #   #   - 'DAGSTER_POSTGRES_USER=$DAGSTER_POSTGRES_USER'
+  #   #   - 'DAGSTER_POSTGRES_PASSWORD=$DAGSTER_POSTGRES_PASSWORD'
+  #   secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
 
+  - name: gcr.io/cloud-builders/docker
+      secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
+      entrypoint: bash
+      args: 
+      - -c
+      - |
+          docker build -f dagster-postgres/Dockerfile -t ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH} --build-arg=PGUSER=$$DAGSTER_POSTGRES_USER,PGPASS=$$DAGSTER_POSTGRES_PASSWORD .
 
 availableSecrets:
   secretManager:
