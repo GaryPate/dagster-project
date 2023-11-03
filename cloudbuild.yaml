@@ -12,7 +12,7 @@ steps:
       - ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}
       - '.'
     dir: '.'
-    secretEnv: ['BEARER_TOKEN']
+    secretEnv: ['BEARER_TOKEN', 'DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
 
   # - name: 'gcr.io/cloud-builders/docker'
   #   entrypoint: 'docker'
