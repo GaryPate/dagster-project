@@ -33,20 +33,20 @@ steps:
 
 availableSecrets:
   secretManager:
-  - versionName: projects/ml-dev-403200/secrets/twitter_api_key/versions/latest
-    env: 'API_KEY'
-  - versionName: projects/ml-dev-403200/secrets/twitter_api_secret/versions/latest
-    env: 'API_SECRET'
-  - versionName: projects/ml-dev-403200/secrets/twitter_access_token/versions/latest
-    env: 'ACCESS_TOKEN'
-  - versionName: projects/ml-dev-403200/secrets/twitter_access_secret/versions/latest
-    env: 'ACCESS_SECRET'
-  - versionName: projects/ml-dev-403200/secrets/twitter_bearer_token/versions/latest
-    env: 'BEARER_TOKEN'
-  - versionName: projects/ml-dev-403200/secrets/twitter_client_id/versions/latest
-    env: 'CLIENT_ID'
-  - versionName: projects/ml-dev-403200/secrets/twitter_client_secret/versions/latest
-    env: 'CLIENT_SECRET'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_api_key/versions/latest
+  #   env: 'API_KEY'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_api_secret/versions/latest
+  #   env: 'API_SECRET'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_access_token/versions/latest
+  #   env: 'ACCESS_TOKEN'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_access_secret/versions/latest
+  #   env: 'ACCESS_SECRET'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_bearer_token/versions/latest
+  #   env: 'BEARER_TOKEN'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_client_id/versions/latest
+  #   env: 'CLIENT_ID'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_client_secret/versions/latest
+  #   env: 'CLIENT_SECRET'
   - versionName: projects/ml-dev-403200/secrets/dagster_postgres_user/versions/latest
     env: 'DAGSTER_POSTGRES_USER'
   - versionName: projects/ml-dev-403200/secrets/dagster_postgres_pass/versions/latest
@@ -56,8 +56,8 @@ availableSecrets:
 options:
   dynamic_substitutions: true
 images:
-  - '${_REGISTRY_BASE}/dagster-project:$SHORT_SHA'
-  - '${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}'
+  # - '${_REGISTRY_BASE}/dagster-project:$SHORT_SHA'
+  # - '${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}'
   - '${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA'
   - '${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}'
 timeout: 500s
