@@ -24,6 +24,12 @@ steps:
       - ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA
       - -t
       - ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}
+      - e
+      - DAGSTER_POSTGRES_USER=${DAGSTER_POSTGRES_USER}
+      - e
+      - DAGSTER_POSTGRES_PASSWORD=${DAGSTER_POSTGRES_PASSWORD}
+      - e
+      - POSTGRES_PASSWORD=${DAGSTER_POSTGRES_PASSWORD}
       - '.'
     dir: '.'
     secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
