@@ -11,14 +11,21 @@ FROM python:3.10-slim
 #     dagster-webserver \
 #     dagster-postgres \
 #     dagster-docker
+ARG PGPASS
+ARG PGUSER
+ARG BEARER
+
+ENV DAGSTER_POSTGRES_DB=dagsterdb
+ENV DAGSTER_POSTGRES_PASSWORD=${PGPASS} 
+ENV DAGSTER_POSTGRES_USER=${PGUSER}
+ENV POSTGRES_PASSWORD=${PGPASS}
+ENV BEARER_TOKEN=${BEARER}
 
 # Set $DAGSTER_HOME and copy dagster instance and workspace YAML there
 ENV DAGSTER_HOME=/opt/dagster/dagster-project/
 ENV DBT_TARGET_PATH=/opt/dagster/dagster-project/dbt_project/target/
 ENV DBT_PROFILES_DIR=/opt/dagster/dagster-project/dbt_project/
 ENV GOOGLE_APPLICATION_CREDENTIALS=/mnt/gcloud/dagster_gcp_key.json
-
-ENV DAGSTER_POSTGRES_DB=dagsterdb
 
 COPY dagster.yaml workspace.yaml $DAGSTER_HOME
 
