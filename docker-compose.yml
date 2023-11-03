@@ -23,7 +23,7 @@ services:
              dagster-daemon run"
 
   dagster-postgres:
-    image: postgres:13.3
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-postgres:develop #postgres:13.3
     ports:
       - 5432:5432
     
@@ -36,12 +36,12 @@ services:
       - dagster-postgres:/var/lib/postgresql/data
 
 
-  grafana:
-    image: grafana/grafana-enterprise
-    container_name: grafana
-    restart: unless-stopped
-    ports:
-     - '3000:3000'
+  # grafana:
+  #   image: grafana/grafana-enterprise
+  #   container_name: grafana
+  #   restart: unless-stopped
+  #   ports:
+  #    - '3000:3000'
 
 volumes:
   dagster-postgres:

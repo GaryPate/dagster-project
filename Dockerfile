@@ -18,10 +18,7 @@ ENV DBT_TARGET_PATH=/opt/dagster/dagster-project/dbt_project/target/
 ENV DBT_PROFILES_DIR=/opt/dagster/dagster-project/dbt_project/
 ENV GOOGLE_APPLICATION_CREDENTIALS=/mnt/gcloud/dagster_gcp_key.json
 
-# ENV DAGSTER_POSTGRES_USER=dagsteruser
-# ENV DAGSTER_POSTGRES_PASSWORD=dagsterpass
 ENV DAGSTER_POSTGRES_DB=dagsterdb
-# RUN mkdir -p $DAGSTER_HOME
 
 COPY dagster.yaml workspace.yaml $DAGSTER_HOME
 

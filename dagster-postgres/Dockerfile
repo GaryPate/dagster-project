@@ -1,0 +1,2 @@
+FROM postgres:12
+ENV DAGSTER_POSTGRES_DB=dagsterdb

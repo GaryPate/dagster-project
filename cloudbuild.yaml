@@ -14,6 +14,21 @@ steps:
     dir: '.'
     secretEnv: ['API_KEY', 'API_SECRET', 'ACCESS_TOKEN', 'ACCESS_SECRET', 'BEARER_TOKEN', 'CLIENT_ID', 'CLIENT_SECRET', 'DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
 
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'docker'
+    args:
+      - build
+      - -f
+      - dagster-postgres/Dockerfile
+      - -t
+      - ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA
+      - -t
+      - ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}
+      - '.'
+    dir: '.'
+    secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
+
+
 availableSecrets:
   secretManager:
   - versionName: projects/ml-dev-403200/secrets/twitter_api_key/versions/latest
@@ -41,6 +56,8 @@ options:
 images:
   - '${_REGISTRY_BASE}/dagster-project:$SHORT_SHA'
   - '${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}'
+  - '${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA'
+  - '${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}'
 timeout: 500s
 substitutions:
   _SAFE_BRANCH: ${BRANCH_NAME//\//-}
