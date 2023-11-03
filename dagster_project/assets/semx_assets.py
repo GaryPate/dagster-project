@@ -1,14 +1,11 @@
 import tweepy
 import json
-# import os
 import re
 from datetime import datetime, timedelta
 import pandas as pd
 from dagster_gcp import BigQueryResource
-#from dagster_dbt import get_asset_key_for_source
 from textblob import TextBlob
 from dagster import asset
-#from .get_dbt_assets import dagster_dbt_assets
 from typing import List
 
 
