@@ -1,18 +1,18 @@
 steps:
 
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'docker'
-    args:
-      - build
-      - -f
-      - Dockerfile
-      - -t
-      - ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA
-      - -t
-      - ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}
-      - '.'
-    dir: '.'
-    secretEnv: ['API_KEY', 'API_SECRET', 'ACCESS_TOKEN', 'ACCESS_SECRET', 'BEARER_TOKEN', 'CLIENT_ID', 'CLIENT_SECRET']
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   entrypoint: 'docker'
+  #   args:
+  #     - build
+  #     - -f
+  #     - Dockerfile
+  #     - -t
+  #     - ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA
+  #     - -t
+  #     - ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}
+  #     - '.'
+  #   dir: '.'
+  #   secretEnv: ['API_KEY', 'API_SECRET', 'ACCESS_TOKEN', 'ACCESS_SECRET', 'BEARER_TOKEN', 'CLIENT_ID', 'CLIENT_SECRET']
 
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'docker'
@@ -24,7 +24,7 @@ steps:
       - ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA
       - -t
       - ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}
-      - -e
+      - -c
       - DAGSTER_POSTGRES_USER=$$DAGSTER_POSTGRES_USER DAGSTER_POSTGRES_PASSWORD=$$DAGSTER_POSTGRES_PASSWORD POSTGRES_PASSWORD=$$DAGSTER_POSTGRES_PASSWORD
       - '.'
     dir: '.'
