@@ -43,7 +43,7 @@ steps:
     args: 
     - -c
     - |
-        docker build -f dagster-postgres/Dockerfile -t ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH} --build-arg=PGUSER=$$DAGSTER_POSTGRES_USER,PGPASS=$$DAGSTER_POSTGRES_PASSWORD .
+        docker build -f dagster-postgres/Dockerfile -t ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH} --build-arg=PGUSER=$$DAGSTER_POSTGRES_USER, PGPASS=$$DAGSTER_POSTGRES_PASSWORD .
 
 availableSecrets:
   secretManager:
