@@ -38,12 +38,12 @@ steps:
   #   secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
 
   - name: gcr.io/cloud-builders/docker
-      secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
-      entrypoint: bash
-      args: 
-      - -c
-      - |
-          docker build -f dagster-postgres/Dockerfile -t ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH} --build-arg=PGUSER=$$DAGSTER_POSTGRES_USER,PGPASS=$$DAGSTER_POSTGRES_PASSWORD .
+    secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
+    entrypoint: bash
+    args: 
+    - -c
+    - |
+        docker build -f dagster-postgres/Dockerfile -t ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH} --build-arg=PGUSER=$$DAGSTER_POSTGRES_USER,PGPASS=$$DAGSTER_POSTGRES_PASSWORD .
 
 availableSecrets:
   secretManager:
