@@ -1,18 +1,18 @@
 steps:
 
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   entrypoint: 'docker'
-  #   args:
-  #     - build
-  #     - -f
-  #     - Dockerfile
-  #     - -t
-  #     - ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA
-  #     - -t
-  #     - ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}
-  #     - '.'
-  #   dir: '.'
-  #   secretEnv: ['API_KEY', 'API_SECRET', 'ACCESS_TOKEN', 'ACCESS_SECRET', 'BEARER_TOKEN', 'CLIENT_ID', 'CLIENT_SECRET']
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'docker'
+    args:
+      - build
+      - -f
+      - Dockerfile
+      - -t
+      - ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA
+      - -t
+      - ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}
+      - '.'
+    dir: '.'
+    secretEnv: ['BEARER_TOKEN']
 
   # - name: 'gcr.io/cloud-builders/docker'
   #   entrypoint: 'docker'
@@ -55,8 +55,8 @@ availableSecrets:
   #   env: 'ACCESS_TOKEN'
   # - versionName: projects/ml-dev-403200/secrets/twitter_access_secret/versions/latest
   #   env: 'ACCESS_SECRET'
-  # - versionName: projects/ml-dev-403200/secrets/twitter_bearer_token/versions/latest
-  #   env: 'BEARER_TOKEN'
+  - versionName: projects/ml-dev-403200/secrets/twitter_bearer_token/versions/latest
+    env: 'BEARER_TOKEN'
   # - versionName: projects/ml-dev-403200/secrets/twitter_client_id/versions/latest
   #   env: 'CLIENT_ID'
   # - versionName: projects/ml-dev-403200/secrets/twitter_client_secret/versions/latest
@@ -70,8 +70,8 @@ availableSecrets:
 options:
   dynamic_substitutions: true
 images:
-  # - '${_REGISTRY_BASE}/dagster-project:$SHORT_SHA'
-  # - '${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}'
+  - '${_REGISTRY_BASE}/dagster-project:$SHORT_SHA'
+  - '${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}'
   - '${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA'
   - '${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}'
 timeout: 500s

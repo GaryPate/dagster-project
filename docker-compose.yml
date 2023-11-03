@@ -27,10 +27,10 @@ services:
     ports:
       - 5432:5432
     
-    environment:
-      POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
-      POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
-      POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+    # environment:
+    #   POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+    #   POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+    #   POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
 
     volumes:
       - dagster-postgres:/var/lib/postgresql/data
@@ -46,3 +46,8 @@ services:
 volumes:
   dagster-postgres:
     driver: local
+
+
+
+# Database is uninitialized and superuser password is not specified. You must specify POSTGRES_PASSWORD to a non-empty value for the
+#  superuser. For example, "-e POSTGRES_PASSWORD=password" on "docker run".
