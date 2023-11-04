@@ -1,41 +1,5 @@
 steps:
 
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   entrypoint: 'docker'
-  #   args:
-  #     - build
-  #     - -f
-  #     - Dockerfile
-  #     - -t
-  #     - ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA
-  #     - -t
-  #     - ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}
-  #     - '.'
-  #   dir: '.'
-  #   secretEnv: ['BEARER_TOKEN', 'DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
-
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   entrypoint: 'docker'
-  #   args:
-  #     - build
-  #     - -f
-  #     - dagster-postgres/Dockerfile
-  #     - -t
-  #     - ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA
-  #     - -t
-  #     - ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}
-  #     - --build-arg 
-  #     - PGUSER=${DAGSTER_POSTGRES_USER} #$$DAGSTER_POSTGRES_USER 
-  #     - --build-arg 
-  #     - PGPASS=${DAGSTER_POSTGRES_PASSWORD} #$$DAGSTER_POSTGRES_PASSWORD
-  #     #- -c
-  #     #- DAGSTER_POSTGRES_USER=$$DAGSTER_POSTGRES_USER DAGSTER_POSTGRES_PASSWORD=$$DAGSTER_POSTGRES_PASSWORD POSTGRES_PASSWORD=$$DAGSTER_POSTGRES_PASSWORD
-  #     - '.'
-  #   dir: '.'
-  #   # env:
-  #   #   - 'DAGSTER_POSTGRES_USER=$DAGSTER_POSTGRES_USER'
-  #   #   - 'DAGSTER_POSTGRES_PASSWORD=$DAGSTER_POSTGRES_PASSWORD'
-  #   secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
   - name: gcr.io/cloud-builders/docker
     secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD', 'BEARER_TOKEN']
     entrypoint: bash
@@ -43,8 +7,6 @@ steps:
     - -c
     - |
         docker build -f Dockerfile -t ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH} --build-arg=PGUSER=$${DAGSTER_POSTGRES_USER} --build-arg=PGPASS=$${DAGSTER_POSTGRES_PASSWORD} --build-arg=BEARER=$${BEARER_TOKEN} .
-
-
 
   - name: gcr.io/cloud-builders/docker
     secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
