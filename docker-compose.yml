@@ -9,10 +9,12 @@ services:
       - ${HOME}/.config/gcloud:/mnt/gcloud
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
+    networks:
+      - dagster_network
     command: >
       sh -c "chmod +x ./up.sh &&
              . ./up.sh &&  
-             dagster-webserver -w workspace.yaml -h 0.0.0.0 -p 3100 "
+             dagster-webserver -w workspace.yaml -h 0.0.0.0 -p 3100"
     container_name:
       docker_webserver
     expose:
@@ -23,8 +25,6 @@ services:
       POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
       POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
       POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
-    networks:
-      - docker_network
     depends_on:
       - docker_postgres
 
@@ -35,22 +35,26 @@ services:
       - ${HOME}/.config/gcloud:/mnt/gcloud
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
+    networks:
+      - dagster_network
     command: >
       sh -c "chmod +x ./up.sh &&
              . ./up.sh &&  
-             dagster-daemon run"
+             dagster-daemon run "
     restart: on-failure
     environment:
       POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
       POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
       POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+    depends_on:
+      - docker_postgres
 
   docker_postgres:
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-postgres:develop #postgres:13.3
     ports:
       - 5432:5432
     networks:
-      - docker_network
+      - dagster_network
     container_name: docker_postgres
     environment:
       POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
@@ -72,9 +76,8 @@ volumes:
     driver: local
 
 networks:
-  docker_network:
+  dagster_network:
     driver: bridge
-    name: docker_network
 
 
 # Database is uninitialized and superuser password is not specified. You must specify POSTGRES_PASSWORD to a non-empty value for the

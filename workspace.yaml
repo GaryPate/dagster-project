@@ -1,3 +1,10 @@
+# load_from:
+#   - python_package:
+#       package_name: dagster_project
+
 load_from:
-  - python_package:
-      package_name: dagster_project
+  # Each entry here corresponds to a service in the docker-compose file that exposes user code.
+  - grpc_server:
+      host: docker_webserver
+      port: 4000
+      location_name: "user_code"

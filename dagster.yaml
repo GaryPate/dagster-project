@@ -23,7 +23,7 @@ run_launcher:
       - DAGSTER_POSTGRES_USER
       - DAGSTER_POSTGRES_PASSWORD
       - DAGSTER_POSTGRES_DB
-    network: docker_network
+    network: dagster_network
     container_kwargs:
       volumes: # Make docker client accessible to any launched containers as well
         - /var/run/docker.sock:/var/run/docker.sock
@@ -33,6 +33,7 @@ run_storage:
   module: dagster_postgres.run_storage
   class: PostgresRunStorage
   config:
+    network: dagster_network
     postgres_db:
       hostname: docker_postgres
       username:
@@ -47,6 +48,7 @@ schedule_storage:
   module: dagster_postgres.schedule_storage
   class: PostgresScheduleStorage
   config:
+    network: dagster_network
     postgres_db:
       hostname: docker_postgres
       username:
@@ -61,6 +63,7 @@ event_log_storage:
   module: dagster_postgres.event_log
   class: PostgresEventLogStorage
   config:
+    network: dagster_network
     postgres_db:
       hostname: docker_postgres
       username:
