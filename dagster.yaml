@@ -30,11 +30,11 @@ run_launcher:
         - /mnt/sentimax:/mnt/sentimax
 
 run_storage:
-  module: dagster-postgres.run_storage
+  module: dagster_postgres.run_storage
   class: PostgresRunStorage
   config:
     postgres_db:
-      hostname: dagster-postgres
+      hostname: dagster_postgres
       username:
         env: DAGSTER_POSTGRES_USER
       password:
@@ -44,11 +44,11 @@ run_storage:
       port: 5432
 
 schedule_storage:
-  module: dagster-postgres.schedule_storage
+  module: dagster_postgres.schedule_storage
   class: PostgresScheduleStorage
   config:
     postgres_db:
-      hostname: dagster-postgres
+      hostname: dagster_postgres
       username:
         env: DAGSTER_POSTGRES_USER
       password:
@@ -58,11 +58,11 @@ schedule_storage:
       port: 5432
 
 event_log_storage:
-  module: dagster-postgres.event_log
+  module: dagster_postgres.event_log
   class: PostgresEventLogStorage
   config:
     postgres_db:
-      hostname: dagster-postgres
+      hostname: dagster_postgres
       username:
         env: DAGSTER_POSTGRES_USER
       password:
