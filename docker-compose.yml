@@ -18,7 +18,7 @@ services:
     networks:
       - docker_network
     depends_on:
-      - dagster_postgres
+      - docker_postgres
 
   dagster_daemon:
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
@@ -34,19 +34,19 @@ services:
       POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
       POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
 
-  dagster_postgres:
+  docker_postgres:
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-postgres:develop #postgres:13.3
     ports:
       - 5432:5432
     networks:
       - docker_network
-    container_name: dagster_postgres
+    container_name: docker_postgres
     environment:
       POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
       POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
       POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
     volumes:
-      - dagster_postgres:/var/lib/postgresql/data
+      - docker_postgres:/var/lib/postgresql/data
 
 
   # grafana:
@@ -57,7 +57,7 @@ services:
   #    - '3000:3000'
 
 volumes:
-  dagster_postgres:
+  docker_postgres:
     driver: local
 
 networks:
