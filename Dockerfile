@@ -48,6 +48,7 @@ RUN mkdir /mnt/gcloud/
 # RUN mkdir /mnt/dbt/
 
 EXPOSE 3000
+EXPOSE 4000
 
 # CMD ["mkdir" "/mnt/gcloud/"]
 # CMD ["mkdir" "/mnt/dbt/"]
