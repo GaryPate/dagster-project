@@ -118,16 +118,20 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
       - /mnt/sentimax:/mnt/sentimax
-  # grafana:
-  #   image: grafana/grafana-enterprise
-  #   container_name: grafana
-  #   restart: unless-stopped
-  #   ports:
-  #    - '3000:3000'
+  
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - '3010:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
 
 volumes:
   docker_postgres:
     driver: local
+  grafana-storage: {}
 
 networks:
   dagster_network:
