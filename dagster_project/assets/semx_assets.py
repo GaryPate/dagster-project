@@ -7,6 +7,7 @@ from dagster_gcp import BigQueryResource
 from textblob import TextBlob
 from dagster import asset
 from typing import List
+import os
 
 
 class Sentiment:
@@ -62,7 +63,7 @@ def st01_tweets_to_json() -> None:
     #     return_ls.append({'id': tweet.id, 'text': tweet.text})
 
     # return return_ls
-    with open('/data/tweet_data.json', 'w') as f:
+    with open('/mnt/sentimax/tweet_data.json', 'w') as f:
         for tweet in tweets_data:
             print(tweet)
             f.write(json.dumps({'id': tweet.id, 'text': tweet.text}) + "\n")
@@ -74,7 +75,7 @@ def st02_tweet_json_to_bq(bigquery: BigQueryResource) -> None:
     Reads JSON and loads to staging table
     """
     data = []
-    with open("data/tweet_data.json", 'r', encoding='utf-8') as f:
+    with open("/mnt/sentimax/tweet_data.json", 'r', encoding='utf-8') as f:
         for line in f:
             data.append(line)
 

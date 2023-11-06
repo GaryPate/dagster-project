@@ -9,7 +9,7 @@ services:
       - ${HOME}/.config/gcloud:/mnt/gcloud
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
-      - /mnt/sentimax:/opt/dagster/dagster-project/data
+      - /mnt/sentimax:/mnt/sentimax
     networks:
       - dagster_network
     command: >
@@ -40,7 +40,7 @@ services:
       - ${HOME}/.config/gcloud:/mnt/gcloud
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
-      - /mnt/sentimax:/opt/dagster/dagster-project/data
+      - /mnt/sentimax:/mnt/sentimax
     networks:
       - dagster_network
     command: >
@@ -117,7 +117,7 @@ services:
       - ${HOME}/.config/gcloud:/mnt/gcloud
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
-      - /mnt/sentimax:/opt/dagster/dagster-project/data
+      - /mnt/sentimax:/mnt/sentimax
   # grafana:
   #   image: grafana/grafana-enterprise
   #   container_name: grafana
