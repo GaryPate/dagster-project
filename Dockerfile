@@ -55,7 +55,8 @@ COPY up.sh .
 RUN apt-get update -y && apt-get install -y 
 RUN pip3 install -r requirements.txt
 RUN python -m textblob.download_corpora 
-RUN mkdir /mnt/gcloud/
+# RUN mkdir /mnt/gcloud/
+# RUN mkdir /mnt/sentimax/
 # RUN mkdir /mnt/dbt/
 
 EXPOSE 3000
