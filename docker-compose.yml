@@ -1,0 +1,139 @@
+version: "3.7"
+
+services:
+
+  dagster_webserver:
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
+    volumes:
+      - ${HOME}/.dbt:/mnt/dbt
+      - ${HOME}/.config/gcloud:/mnt/gcloud
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/io_manager_storage:/tmp/io_manager_storage
+      - /mnt/sentimax:/mnt/sentimax
+    networks:
+      - dagster_network
+    command: >
+      sh -c "chmod +x ./up.sh &&
+             . ./up.sh &&  
+             dagster-webserver -w workspace.yaml -h 0.0.0.0 -p 3000"
+    container_name:
+      docker_webserver
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    # environment:
+    #   POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+    #   POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+    #   POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+    #   DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+    #   DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+    #   DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+    depends_on:
+      - docker_postgres
+      - dagster_user_code
+
+  dagster_daemon:
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
+    volumes:
+      # - ${HOME}/.dbt:/mnt/dbt
+      - ${HOME}/.config/gcloud:/mnt/gcloud
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/io_manager_storage:/tmp/io_manager_storage
+      - /mnt/sentimax:/mnt/sentimax
+    networks:
+      - dagster_network
+    command: >
+      sh -c "chmod +x ./up.sh &&
+             . ./up.sh &&  
+             dagster-daemon run "
+    restart: on-failure
+    # environment:
+    #   POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+    #   POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+    #   POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+    #   DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+    #   DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+    #   DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+    depends_on:
+      - docker_postgres
+      - dagster_user_code
+
+  # db:
+  #   image: postgres
+  #   restart: always
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - ./dataset:/docker-entrypoint-initdb.d
+  #   ports:
+  #     - 5432:5432
+
+  docker_postgres:
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-postgres:develop #postgres:13.3
+    restart: always
+    # env_file:
+    #   - .env
+    # volumes:
+    #   - ./dataset:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+    networks:
+      - dagster_network
+    container_name: docker_postgres
+    # environment:
+    #   POSTGRES_USER: ${POSTGRES_USER}
+    #   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    #   POSTGRES_DB: ${POSTGRES_DB}
+    #   DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+    #   DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+    #   DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+    # volumes:
+    #   - docker_postgres:/var/lib/postgresql/data
+
+  dagster_user_code:
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
+    container_name: dagster_user_code
+    # image: docker_example_user_code_image
+    restart: always
+    # environment:
+    #   POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+    #   POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+    #   POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+    #   DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER}
+    #   DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD}
+    #   DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB}
+    networks:
+      - dagster_network
+    expose:
+      - "4000"
+    ports:
+      - 4000:4000
+    command: >
+      sh -c "chmod +x ./up.sh &&
+             . ./up.sh &&  
+             dagster api grpc -h 0.0.0.0 -p 4000 -f /opt/dagster/dagster-project/dagster_project/__init__.py"
+    volumes:
+      - ${HOME}/.config/gcloud:/mnt/gcloud
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/io_manager_storage:/tmp/io_manager_storage
+      - /mnt/sentimax:/mnt/sentimax
+  # grafana:
+  #   image: grafana/grafana-enterprise
+  #   container_name: grafana
+  #   restart: unless-stopped
+  #   ports:
+  #    - '3000:3000'
+
+volumes:
+  docker_postgres:
+    driver: local
+
+networks:
+  dagster_network:
+    driver: bridge
+    name: dagster_network
+
+
+# Database is uninitialized and superuser password is not specified. You must specify POSTGRES_PASSWORD to a non-empty value for the
+#  superuser. For example, "-e POSTGRES_PASSWORD=password" on "docker run".

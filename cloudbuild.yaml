@@ -1,44 +1,50 @@
 steps:
 
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'docker'
-    args:
-      - build
-      - -f
-      - Dockerfile
-      - -t
-      - ${_REGISTRY_BASE}/models:$SHORT_SHA
-      - -t
-      - ${_REGISTRY_BASE}/models:${_SAFE_BRANCH}
-      - '.'
-    dir: '.'
-    secretEnv: ['API_KEY', 'API_SECRET', 'ACCESS_TOKEN', 'ACCESS_SECRET', 'BEARER_TOKEN', 'CLIENT_ID', 'CLIENT_SECRET']
+  - name: gcr.io/cloud-builders/docker
+    secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD', 'BEARER_TOKEN']
+    entrypoint: bash
+    args: 
+    - -c
+    - |
+        docker build -f Dockerfile -t ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH} --build-arg=PGUSER=$${DAGSTER_POSTGRES_USER} --build-arg=PGPASS=$${DAGSTER_POSTGRES_PASSWORD} --build-arg=BEARER=$${BEARER_TOKEN} --build-arg=DAGSTER_IMAGE=${_REGISTRY_BASE}/dagster-project:develop .
+
+  - name: gcr.io/cloud-builders/docker
+    secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
+    entrypoint: bash
+    args: 
+    - -c
+    - |
+        docker build -f dagster-postgres/Dockerfile -t ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH} --build-arg=PGUSER=$${DAGSTER_POSTGRES_USER} --build-arg=PGPASS=$${DAGSTER_POSTGRES_PASSWORD} .
 
 availableSecrets:
   secretManager:
-  - versionName: projects/ml-dev-403200/secrets/twitter_api_key/versions/latest
-    env: 'API_KEY'
-  - versionName: projects/ml-dev-403200/secrets/twitter_api_secret/versions/latest
-    env: 'API_SECRET'
-  - versionName: projects/ml-dev-403200/secrets/twitter_access_token/versions/latest
-    env: 'ACCESS_TOKEN'
-  - versionName: projects/ml-dev-403200/secrets/twitter_access_secret/versions/latest
-    env: 'ACCESS_SECRET'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_api_key/versions/latest
+  #   env: 'API_KEY'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_api_secret/versions/latest
+  #   env: 'API_SECRET'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_access_token/versions/latest
+  #   env: 'ACCESS_TOKEN'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_access_secret/versions/latest
+  #   env: 'ACCESS_SECRET'
   - versionName: projects/ml-dev-403200/secrets/twitter_bearer_token/versions/latest
     env: 'BEARER_TOKEN'
-  - versionName: projects/ml-dev-403200/secrets/twitter_client_id/versions/latest
-    env: 'CLIENT_ID'
-  - versionName: projects/ml-dev-403200/secrets/twitter_client_secret/versions/latest
-    env: 'CLIENT_SECRET'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_client_id/versions/latest
+  #   env: 'CLIENT_ID'
+  # - versionName: projects/ml-dev-403200/secrets/twitter_client_secret/versions/latest
+  #   env: 'CLIENT_SECRET'
+  - versionName: projects/ml-dev-403200/secrets/dagster_postgres_user/versions/latest
+    env: 'DAGSTER_POSTGRES_USER'
+  - versionName: projects/ml-dev-403200/secrets/dagster_postgres_pass/versions/latest
+    env: 'DAGSTER_POSTGRES_PASSWORD'
 
 
 options:
   dynamic_substitutions: true
 images:
-  - '${_REGISTRY_BASE}/models:$SHORT_SHA'
-  - '${_REGISTRY_BASE}/models:${_SAFE_BRANCH}'
-  - '${_REGISTRY_BASE}/dagster-image:$SHORT_SHA'
-  - '${_REGISTRY_BASE}/dagster-image:${_SAFE_BRANCH}'
+  - '${_REGISTRY_BASE}/dagster-project:$SHORT_SHA'
+  - '${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}'
+  - '${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA'
+  - '${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}'
 timeout: 500s
 substitutions:
   _SAFE_BRANCH: ${BRANCH_NAME//\//-}
