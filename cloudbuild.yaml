@@ -6,7 +6,7 @@ steps:
     args: 
     - -c
     - |
-        docker build -f Dockerfile -t ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH} --build-arg=PGUSER=$${DAGSTER_POSTGRES_USER} --build-arg=PGPASS=$${DAGSTER_POSTGRES_PASSWORD} --build-arg=BEARER=$${BEARER_TOKEN} .
+        docker build -f Dockerfile -t ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH} --build-arg=PGUSER=$${DAGSTER_POSTGRES_USER} --build-arg=PGPASS=$${DAGSTER_POSTGRES_PASSWORD} --build-arg=BEARER=$${BEARER_TOKEN} --build-arg=DAGSTER_CURRENT_IMAGE=${_REGISTRY_BASE}/dagster-project:develop .
 
   - name: gcr.io/cloud-builders/docker
     secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
