@@ -47,7 +47,7 @@ RUN python -m textblob.download_corpora
 RUN mkdir /mnt/gcloud/
 # RUN mkdir /mnt/dbt/
 
-EXPOSE 3100
+EXPOSE 3000
 
 # CMD ["mkdir" "/mnt/gcloud/"]
 # CMD ["mkdir" "/mnt/dbt/"]
