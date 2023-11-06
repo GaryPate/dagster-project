@@ -41,8 +41,7 @@ def st01_tweets_to_json() -> None:
     """
     Searches the past hour of tweets
     """
-    # bearer_token = os.environ['BEARER_TOKEN']
-    bearer_token = 'AAAAAAAAAAAAAAAAAAAAAOhuqgEAAAAAWiMzQ5eT02Gq3BFE0PwKR23f4P8%3DRprgve5QqT7W9kAL9qYme4FRk7VfNsiM3LDLerfawwKZ5C7jvx'
+    bearer_token = os.environ['BEARER_TOKEN']
 
     client = tweepy.Client(bearer_token)
     dt_end = datetime.now() - timedelta(hours=1)
@@ -63,7 +62,7 @@ def st01_tweets_to_json() -> None:
     #     return_ls.append({'id': tweet.id, 'text': tweet.text})
 
     # return return_ls
-    with open('tweet_data.json', 'w') as f:
+    with open('/data/tweet_data.json', 'w') as f:
         for tweet in tweets_data:
             print(tweet)
             f.write(json.dumps({'id': tweet.id, 'text': tweet.text}) + "\n")
