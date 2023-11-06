@@ -20,7 +20,7 @@ run_launcher:
       volumes: # Make docker client accessible to any launched containers as well
         - /var/run/docker.sock:/var/run/docker.sock
         - /mnt/sentimax:/mnt/sentimax
-        - ${HOME}/.config/gcloud:/mnt/gcloud
+        - ~/.config/gcloud:/mnt/gcloud
 
 run_storage:
   module: dagster_postgres.run_storage
