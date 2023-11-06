@@ -120,7 +120,7 @@ services:
       - /mnt/sentimax:/mnt/sentimax
   
   grafana:
-    image: grafana/grafana-enterprise
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-grafana:develop
     container_name: grafana
     restart: unless-stopped
     ports:
