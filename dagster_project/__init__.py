@@ -46,7 +46,7 @@ sentimax_dbt_assets_schedule = build_schedule_from_dbt_selection(
 defs = Definitions(
     assets=all_assets,
     jobs=[sentimax_compute_job],
-    schedules=[sentimax_dbt_assets_schedule],
+    schedules=[sentimax_dbt_assets_schedule, sentimax_compute_schedule],
     resources={
         "dbt": DbtCliResource(project_dir=DBT_PROJECT_DIR),
         "bigquery": BigQueryResource(
@@ -55,6 +55,5 @@ defs = Definitions(
          ),
         "io_manager": BigQueryPandasIOManager(project=EnvVar("GCP_PROJECT"),
                                               dataset="SENTIMAX")
-
     },
 )
