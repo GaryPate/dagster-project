@@ -24,23 +24,22 @@ with open(AUTH_FILE, "w") as f:
 
 os.environ["GCP_PROJECT"] = 'ml-dev-403200'
 
-#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = AUTH_FILE
-
 all_assets = load_assets_from_modules([semx_assets, 
                                        get_dbt_assets
                                        ])
 
 sentimax_compute_job = define_asset_job("sentimax_compute_job", selection=AssetSelection.groups("sentimax_compute"))
 
-
 sentimax_compute_schedule = ScheduleDefinition(job=sentimax_compute_job, 
-                                               cron_schedule=HOURLY_PLUS.format('0'))
+                                               cron_schedule=HOURLY_PLUS.format('0'),
+                                               execution_timezone="Australia/Sydney")
 
 sentimax_dbt_assets_schedule = build_schedule_from_dbt_selection(
     [get_dbt_assets.dagster_dbt_assets],
     job_name="dbt_model_job",
     cron_schedule=HOURLY_PLUS.format('10'),
     dbt_select="tag:sentimax-dbt",
+    execution_timezone="Australia/Sydney"
 )
 
 defs = Definitions(
