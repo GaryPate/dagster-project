@@ -18,4 +18,5 @@ pivotcounts AS (
     getval
     PIVOT(SUM(Value) FOR sentiment IN ('positive', 'neutral', 'negative'))
 )
-SELECT * FROM pivotcounts;
+SELECT * FROM pivotcounts
+
