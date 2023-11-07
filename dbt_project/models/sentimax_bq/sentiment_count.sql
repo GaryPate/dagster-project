@@ -10,7 +10,7 @@ WITH getval AS (
     load_datetime as time, 
     sentiment, 
     COUNT(id) as Value,
-    FROM {{ ref('sentiment_increment') }}
+    FROM {{ ref('sentiment_incremental') }}
     GROUP BY load_datetime, sentiment
 ),
 pivotcounts AS (
