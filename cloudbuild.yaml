@@ -29,7 +29,7 @@ steps:
     args: 
     - -c
     - |
-        docker build -f dagster-nginx/Dockerfile -t ${_REGISTRY_BASE}/dagster-nginx:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-nginx:${_SAFE_BRANCH} --build-arg=GFUSER=$${GRAFANA_USER} --build-arg=GFPASS=$${GRAFANA_PASSWORD} .
+        docker build -f nginx/Dockerfile -t ${_REGISTRY_BASE}/dagster-nginx:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-nginx:${_SAFE_BRANCH} --build-arg=GFUSER=$${GRAFANA_USER} --build-arg=GFPASS=$${GRAFANA_PASSWORD} .
 
 availableSecrets:
   secretManager:
