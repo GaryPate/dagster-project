@@ -10,6 +10,7 @@ ENV GF_SECURITY_ADMIN_PASSWORD=${GFPASS}
 
 # generate self segined certificate for testing pruposes
 RUN apk update && \
+    apk add --no-cache bash && \
     apk add --no-cache openssl && \
     openssl req -x509 -nodes -days 365 \
     -subj "/C=PL/ST=lubelskie/L=Lublin/O=github-rvva/OU=dev/CN=rvva" \
