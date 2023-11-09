@@ -8,7 +8,8 @@ ENV GF_SECURITY_ADMIN_PASSWORD=${GFPASS}
 # ENV GF_PATHS_CONFIG = /usr/grafana/grafana.ini
 
 ENV GF_SERVER_DOMAIN = sentimax.org
-ENV GF_SERVER_ROOT_URL = %(protocol)s://%(domain)s:%(http_port)s/grafana/
+ENV GF_SERVER_ROOT_URL=https://sentimax.org/grafana
+# ENV GF_SERVER_ROOT_URL = %(protocol)s://%(domain)s:%(http_port)s/grafana/
 ENV GF_SERVER_SERVE_FROM_SUB_PATH = true
 
 COPY . .
