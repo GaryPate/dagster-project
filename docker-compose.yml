@@ -15,10 +15,10 @@ services:
     command: >
       sh -c "chmod +x ./up.sh &&
              . ./up.sh &&  
-             dagster-webserver -w workspace.yaml --path-prefix dagster -h 0.0.0.0 -p 3000"  
+             dagster-webserver -w workspace.yaml --path-prefix /dagster -h 0.0.0.0 -p 3000"  
     #--read-only
     container_name:
-      docker_webserver
+      dagster_webserver
     expose:
       - "3000"
     ports:
