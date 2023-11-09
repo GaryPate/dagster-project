@@ -13,9 +13,9 @@ ENV GF_SERVER_ROOT_URL = https://app.sentimax.org/grafana
 ENV GF_SERVER_SERVE_FROM_SUB_PATH = true
 
 # ENV GF_SERVER_ROOT_URL = %(protocol)s://%(domain)s:%(http_port)s/grafana/
-ENV GF_SERVER_SERVE_FROM_SUB_PATH = true
+# ENV GF_SERVER_SERVE_FROM_SUB_PATH = true
 
-COPY . .
+# COPY . .
 
 # ENV DAGSTER_POSTGRES_USER=${PGUSER}
 

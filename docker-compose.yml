@@ -104,24 +104,24 @@ services:
       # - ./certbot/etc/live/example.com/privkey.pem:/example.com/privkey.pem
       # - ./nginx/certbot/conf/privkey.pem:/etc/letsencrypt/live/app.sentimax.org/privkey.pem
       # - ./nginx/certbot/conf/fullchain.pem:/etc/letsencrypt/live/app.sentimax.org/fullchain.pem
-      - ./nginx/certbot/conf:/etc/letsencrypt #/live/app.sentimax.org/
-      - ./nginx/certbot/www:/var/www/certbot
+      # - ./nginx/certbot/conf:/etc/letsencrypt #/live/app.sentimax.org/
+      # - ./nginx/certbot/www:/var/www/certbot
     networks:
       - dagster_network
     ports:
       - 80:80
       - 443:443
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    # command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
       #- 8080:8080
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./nginx/certbot/conf:/etc/letsencrypt
-      #- ./nginx/certbot/conf/:/etc/letsencrypt/live/app.sentimax.org/
-      - ./nginx/certbot/www:/var/www/certbot
-      #- ./nginx/certbot/conf/privkey.pem:/etc/letsencrypt/live/app.sentimax.org/privkey.pem
-      #- ./nginx/certbot/conf/fullchain.pem:/etc/letsencrypt/live/app.sentimax.org/fullchain.pem
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  # certbot:
+  #   image: certbot/certbot
+  #   volumes:
+  #     - ./nginx/certbot/conf:/etc/letsencrypt
+  #     #- ./nginx/certbot/conf/:/etc/letsencrypt/live/app.sentimax.org/
+  #     - ./nginx/certbot/www:/var/www/certbot
+  #     #- ./nginx/certbot/conf/privkey.pem:/etc/letsencrypt/live/app.sentimax.org/privkey.pem
+  #     #- ./nginx/certbot/conf/fullchain.pem:/etc/letsencrypt/live/app.sentimax.org/fullchain.pem
+  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   docker_postgres:
