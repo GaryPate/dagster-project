@@ -89,7 +89,7 @@ services:
       - GF_SERVER_HTTP_PORT=3010
       - GF_SERVER_PROTOCOL=http  #http 
       - GF_SERVER_DOMAIN=app.sentimax.org
-      - GF_SERVER_ROOT_URL=http://app.sentimax.org/grafana/
+      - GF_SERVER_ROOT_URL=http://app.sentimax.org:3010/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
   
   nginx:
