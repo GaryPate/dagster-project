@@ -91,6 +91,8 @@ services:
       - GF_SERVER_DOMAIN=app.sentimax.org
       - GF_SERVER_ROOT_URL=http://app.sentimax.org:3010/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    networks:
+      - dagster_network
   
   nginx:
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-nginx:develop
