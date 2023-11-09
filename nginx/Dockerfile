@@ -6,8 +6,6 @@ ARG GFPASS
 ENV GF_SECURITY_ADMIN_USER=${GFUSER} 
 ENV GF_SECURITY_ADMIN_PASSWORD=${GFPASS} 
 
-# FROM base as dev
-
 # generate self segined certificate for testing pruposes
 RUN apk update && \
     apk add --no-cache bash && \

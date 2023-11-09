@@ -2,77 +2,77 @@ version: "3.7"
 
 services:
 
-  # dagster_webserver:
-  #   image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
-  #   volumes:
-  #     - ${HOME}/.dbt:/mnt/dbt
-  #     - ${HOME}/.config/gcloud:/mnt/gcloud
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - /tmp/io_manager_storage:/tmp/io_manager_storage
-  #     - /mnt/sentimax:/mnt/sentimax
-  #   networks:
-  #     - dagster_network
-  #   command: >
-  #     sh -c "chmod +x ./up.sh &&
-  #            . ./up.sh &&  
-  #            dagster-webserver -w workspace.yaml -h 0.0.0.0 -p 3000"
-  #   container_name:
-  #     docker_webserver
-  #   expose:
-  #     - "3000"
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - docker_postgres
-  #     - dagster_user_code
+  dagster_webserver:
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
+    volumes:
+      - ${HOME}/.dbt:/mnt/dbt
+      - ${HOME}/.config/gcloud:/mnt/gcloud
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/io_manager_storage:/tmp/io_manager_storage
+      - /mnt/sentimax:/mnt/sentimax
+    networks:
+      - dagster_network
+    command: >
+      sh -c "chmod +x ./up.sh &&
+             . ./up.sh &&  
+             dagster-webserver -w workspace.yaml -h 0.0.0.0 -p 3000"
+    container_name:
+      docker_webserver
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - docker_postgres
+      - dagster_user_code
 
-  # dagster_daemon:
-  #   image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
-  #   volumes:
-  #     # - ${HOME}/.dbt:/mnt/dbt
-  #     - ${HOME}/.config/gcloud:/mnt/gcloud
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - /tmp/io_manager_storage:/tmp/io_manager_storage
-  #     - /mnt/sentimax:/mnt/sentimax
-  #   networks:
-  #     - dagster_network
-  #   command: >
-  #     sh -c "chmod +x ./up.sh &&
-  #            . ./up.sh &&  
-  #            dagster-daemon run "
-  #   restart: on-failure
-  #   depends_on:
-  #     - docker_postgres
-  #     - dagster_user_code
+  dagster_daemon:
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
+    volumes:
+      # - ${HOME}/.dbt:/mnt/dbt
+      - ${HOME}/.config/gcloud:/mnt/gcloud
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/io_manager_storage:/tmp/io_manager_storage
+      - /mnt/sentimax:/mnt/sentimax
+    networks:
+      - dagster_network
+    command: >
+      sh -c "chmod +x ./up.sh &&
+             . ./up.sh &&  
+             dagster-daemon run "
+    restart: on-failure
+    depends_on:
+      - docker_postgres
+      - dagster_user_code
 
-  # docker_postgres:
-  #   image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-postgres:develop #postgres:13.3
-  #   restart: always
-  #   ports:
-  #     - 5432:5432
-  #   networks:
-  #     - dagster_network
-  #   container_name: docker_postgres
+  docker_postgres:
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-postgres:develop #postgres:13.3
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - dagster_network
+    container_name: docker_postgres
 
-  # dagster_user_code:
-  #   image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
-  #   container_name: dagster_user_code
-  #   restart: always
-  #   networks:
-  #     - dagster_network
-  #   expose:
-  #     - "4000"
-  #   ports:
-  #     - 4000:4000
-  #   command: >
-  #     sh -c "chmod +x ./up.sh &&
-  #            . ./up.sh &&  
-  #            dagster api grpc -h 0.0.0.0 -p 4000 -f /opt/dagster/dagster-project/dagster_project/__init__.py"
-  #   volumes:
-  #     - ${HOME}/.config/gcloud:/mnt/gcloud
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - /tmp/io_manager_storage:/tmp/io_manager_storage
-  #     - /mnt/sentimax:/mnt/sentimax
+  dagster_user_code:
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
+    container_name: dagster_user_code
+    restart: always
+    networks:
+      - dagster_network
+    expose:
+      - "4000"
+    ports:
+      - 4000:4000
+    command: >
+      sh -c "chmod +x ./up.sh &&
+             . ./up.sh &&  
+             dagster api grpc -h 0.0.0.0 -p 4000 -f /opt/dagster/dagster-project/dagster_project/__init__.py"
+    volumes:
+      - ${HOME}/.config/gcloud:/mnt/gcloud
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/io_manager_storage:/tmp/io_manager_storage
+      - /mnt/sentimax:/mnt/sentimax
   
   grafana:
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-grafana:develop
@@ -102,28 +102,11 @@ services:
       - ./html:/usr/share/nginx/html:rw
       - ./nginx/conf:/etc/nginx/conf.d
       - ./nginx/log:/var/log/nginx
-      # - ./certbot/etc/live/example.com/fullchain.pem:/example.com/fullchain.pem
-      # - ./certbot/etc/live/example.com/privkey.pem:/example.com/privkey.pem
-      # - ./nginx/certbot/conf/privkey.pem:/etc/letsencrypt/live/app.sentimax.org/privkey.pem
-      # - ./nginx/certbot/conf/fullchain.pem:/etc/letsencrypt/live/app.sentimax.org/fullchain.pem
-      # - ./nginx/certbot/conf:/etc/letsencrypt #/live/app.sentimax.org/
-      # - ./nginx/certbot/www:/var/www/certbot
     networks:
       - dagster_network
     ports:
       - 80:80
       - 443:443
-    # command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-      #- 8080:8080
-  # certbot:
-  #   image: certbot/certbot
-  #   volumes:
-  #     - ./nginx/certbot/conf:/etc/letsencrypt
-  #     #- ./nginx/certbot/conf/:/etc/letsencrypt/live/app.sentimax.org/
-  #     - ./nginx/certbot/www:/var/www/certbot
-  #     #- ./nginx/certbot/conf/privkey.pem:/etc/letsencrypt/live/app.sentimax.org/privkey.pem
-  #     #- ./nginx/certbot/conf/fullchain.pem:/etc/letsencrypt/live/app.sentimax.org/fullchain.pem
-  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   docker_postgres:

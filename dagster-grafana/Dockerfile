@@ -3,12 +3,9 @@ FROM grafana/grafana-enterprise
 ARG GFUSER
 ARG GFPASS
 
-#ENV GF_SECURITY_ADMIN_USER=${GFUSER} 
 ENV RESET_ADMIN_PASSWORD=${GFPASS} 
 RUN echo $RESET_ADMIN_PASSWORD
-# ENV GF_PATHS_CONFIG = /usr/grafana/grafana.ini
 
-# CMD ["dagster-webserver", "-w", "workspace.yaml", "-h", "0.0.0.0", "-p", "3000"]
 CMD ["grafana-cli", "admin", "reset-admin-password", "echo ${RESET_ADMIN_PASSWORD}"]
 #ENV GF_SERVER_DOMAIN = app.sentimax.org
 #ENV GF_SERVER_HTTP_PORT = 3010

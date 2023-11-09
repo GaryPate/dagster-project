@@ -1,12 +1,12 @@
 steps:
 
-  # - name: gcr.io/cloud-builders/docker
-  #   secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD', 'BEARER_TOKEN']
-  #   entrypoint: bash
-  #   args: 
-  #   - -c
-  #   - |
-  #       docker build -f Dockerfile -t ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH} --build-arg=PGUSER=$${DAGSTER_POSTGRES_USER} --build-arg=PGPASS=$${DAGSTER_POSTGRES_PASSWORD} --build-arg=BEARER=$${BEARER_TOKEN} --build-arg=DAGSTER_IMAGE=${_REGISTRY_BASE}/dagster-project:develop .
+  - name: gcr.io/cloud-builders/docker
+    secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD', 'BEARER_TOKEN']
+    entrypoint: bash
+    args: 
+    - -c
+    - |
+        docker build -f Dockerfile -t ${_REGISTRY_BASE}/dagster-project:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH} --build-arg=PGUSER=$${DAGSTER_POSTGRES_USER} --build-arg=PGPASS=$${DAGSTER_POSTGRES_PASSWORD} --build-arg=BEARER=$${BEARER_TOKEN} --build-arg=DAGSTER_IMAGE=${_REGISTRY_BASE}/dagster-project:develop .
 
   - name: gcr.io/cloud-builders/docker
     entrypoint: bash
@@ -15,13 +15,13 @@ steps:
     - |
         docker build -f dagster-grafana/Dockerfile -t ${_REGISTRY_BASE}/dagster-grafana:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-grafana:${_SAFE_BRANCH} --build-arg=GFUSER=$${GRAFANA_USER} --build-arg=GFPASS=$${GRAFANA_PASSWORD} .
 
-  # - name: gcr.io/cloud-builders/docker
-  #   secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
-  #   entrypoint: bash
-  #   args: 
-  #   - -c
-  #   - |
-  #       docker build -f dagster-postgres/Dockerfile -t ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH} --build-arg=PGUSER=$${DAGSTER_POSTGRES_USER} --build-arg=PGPASS=$${DAGSTER_POSTGRES_PASSWORD} .
+  - name: gcr.io/cloud-builders/docker
+    secretEnv: ['DAGSTER_POSTGRES_USER', 'DAGSTER_POSTGRES_PASSWORD']
+    entrypoint: bash
+    args: 
+    - -c
+    - |
+        docker build -f dagster-postgres/Dockerfile -t ${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA -t ${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH} --build-arg=PGUSER=$${DAGSTER_POSTGRES_USER} --build-arg=PGPASS=$${DAGSTER_POSTGRES_PASSWORD} .
 
   - name: gcr.io/cloud-builders/docker
     secretEnv: ['GRAFANA_USER', 'GRAFANA_PASSWORD']
@@ -33,25 +33,25 @@ steps:
 
 availableSecrets:
   secretManager:
-  # - versionName: projects/ml-dev-403200/secrets/twitter_bearer_token/versions/latest
-  #   env: 'BEARER_TOKEN'
+  - versionName: projects/ml-dev-403200/secrets/twitter_bearer_token/versions/latest
+    env: 'BEARER_TOKEN'
   - versionName: projects/ml-dev-403200/secrets/grafana_user/versions/latest
     env: 'GRAFANA_USER'
   - versionName: projects/ml-dev-403200/secrets/grafana_pass/versions/latest
     env: 'GRAFANA_PASSWORD'
-  # - versionName: projects/ml-dev-403200/secrets/dagster_postgres_user/versions/latest
-  #   env: 'DAGSTER_POSTGRES_USER'
-  # - versionName: projects/ml-dev-403200/secrets/dagster_postgres_pass/versions/latest
-  #   env: 'DAGSTER_POSTGRES_PASSWORD'
+  - versionName: projects/ml-dev-403200/secrets/dagster_postgres_user/versions/latest
+    env: 'DAGSTER_POSTGRES_USER'
+  - versionName: projects/ml-dev-403200/secrets/dagster_postgres_pass/versions/latest
+    env: 'DAGSTER_POSTGRES_PASSWORD'
 
 
 options:
   dynamic_substitutions: true
 images:
-  # - '${_REGISTRY_BASE}/dagster-project:$SHORT_SHA'
-  # - '${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}'
-  # - '${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA'
-  # - '${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}'
+  - '${_REGISTRY_BASE}/dagster-project:$SHORT_SHA'
+  - '${_REGISTRY_BASE}/dagster-project:${_SAFE_BRANCH}'
+  - '${_REGISTRY_BASE}/dagster-postgres:$SHORT_SHA'
+  - '${_REGISTRY_BASE}/dagster-postgres:${_SAFE_BRANCH}'
   - '${_REGISTRY_BASE}/dagster-grafana:$SHORT_SHA'
   - '${_REGISTRY_BASE}/dagster-grafana:${_SAFE_BRANCH}'
   - '${_REGISTRY_BASE}/dagster-nginx:$SHORT_SHA'
