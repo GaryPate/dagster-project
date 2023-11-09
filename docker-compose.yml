@@ -84,13 +84,13 @@ services:
       - ./dagster-grafana/provisioning/:/etc/grafana/provisioning/ # Automatically configure datasources
       - grafana-storage:/var/lib/grafana
       - /mnt/grafana/:/etc/grafana/
-    environment:
-      - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_SERVER_HTTP_PORT=3010
-      - GF_SERVER_PROTOCOL=http  #http 
-      - GF_SERVER_DOMAIN=localhost:8080
-      - GF_SERVER_ROOT_URL=http://localhost:8080/grafana/
-      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    #environment:
+      #- GF_USERS_ALLOW_SIGN_UP=false
+      #- GF_SERVER_HTTP_PORT=3010
+      #- GF_SERVER_PROTOCOL=http  #http 
+      #- GF_SERVER_DOMAIN=localhost:8080
+      #- GF_SERVER_ROOT_URL=http://localhost:8080/grafana/
+      #- GF_SERVER_SERVE_FROM_SUB_PATH=true
   
   nginx:
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-nginx:develop
@@ -100,19 +100,28 @@ services:
       - ./html:/usr/share/nginx/html:rw
       - ./nginx/conf:/etc/nginx/conf.d
       - ./nginx/log:/var/log/nginx
-      - ./nginx/certbot/conf:/etc/letsencrypt
+      # - ./certbot/etc/live/example.com/fullchain.pem:/example.com/fullchain.pem
+      # - ./certbot/etc/live/example.com/privkey.pem:/example.com/privkey.pem
+      # - ./nginx/certbot/conf/privkey.pem:/etc/letsencrypt/live/app.sentimax.org/privkey.pem
+      # - ./nginx/certbot/conf/fullchain.pem:/etc/letsencrypt/live/app.sentimax.org/fullchain.pem
+      - ./nginx/certbot/conf:/etc/letsencrypt #/live/app.sentimax.org/
       - ./nginx/certbot/www:/var/www/certbot
     networks:
       - dagster_network
     ports:
       - 80:80
       - 443:443
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
       #- 8080:8080
   certbot:
     image: certbot/certbot
     volumes:
       - ./nginx/certbot/conf:/etc/letsencrypt
+      #- ./nginx/certbot/conf/:/etc/letsencrypt/live/app.sentimax.org/
       - ./nginx/certbot/www:/var/www/certbot
+      #- ./nginx/certbot/conf/privkey.pem:/etc/letsencrypt/live/app.sentimax.org/privkey.pem
+      #- ./nginx/certbot/conf/fullchain.pem:/etc/letsencrypt/live/app.sentimax.org/fullchain.pem
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   docker_postgres:
