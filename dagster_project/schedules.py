@@ -11,22 +11,13 @@ sentimax_compute_schedule = ScheduleDefinition(job=sentimax_compute_job,
                                                default_status=DefaultScheduleStatus.RUNNING
                                                )
 
-# sentimax_dbt_assets_schedule = build_schedule_from_dbt_selection(
-#     [dagster_dbt_assets],
-#     job_name="dbt_model_job",
-#     cron_schedule=HOURLY_PLUS.format('7'),
-#     dbt_select="tag:sentimax-dbt",
-#     execution_timezone="Australia/Sydney"
-# )
-
-# selects all models tagged with "daily", and all their downstream asset dependencies
-sentimax_dbt_assets = build_dbt_asset_selection(
+dbt_assets_select = build_dbt_asset_selection(
     [dagster_dbt_assets], 
     dbt_select="tag:sentimax-dbt"
 ).downstream()
 
 sentimax_dbt_assets_schedule = ScheduleDefinition(
-    job=define_asset_job("sentimax_dbt_assets", selection=sentimax_dbt_assets),
+    job=define_asset_job("dbt_assets_select", selection=dbt_assets_select),
     cron_schedule=HOURLY_PLUS.format('7'),
     execution_timezone="Australia/Sydney",
     default_status=DefaultScheduleStatus.RUNNING

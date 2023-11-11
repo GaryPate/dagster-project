@@ -18,7 +18,7 @@ class Sentiment:
         '''
         # create TextBlob object of passed tweet text
         analysis = TextBlob(self.clean_tweet(tweet))
-        # set sentiment
+
         if analysis.sentiment.polarity > 0:
             return 'positive'
         elif analysis.sentiment.polarity == 0:
@@ -51,7 +51,7 @@ def st01_tweets_to_json() -> None:
                                             , expansions=["author_id", "geo.place_id"]
                                             , start_time = dt_start
                                             , end_time = dt_end
-                                            , max_results=10
+                                            , max_results=50
                                             )
 
     tweets_data = tweets_ro.data
@@ -77,15 +77,13 @@ def st02_tweet_json_to_bq(bigquery: BigQueryResource) -> None:
     with bigquery.get_client() as client:
         job = client.load_table_from_dataframe(
             dataframe=df,
-            destination="SENTIMAX.st02_tweet_json_to_bq",   #tweet_data_staging",
+            destination="SENTIMAX.st02_tweet_json_to_bq",
         )
         job.result()
 
 
-@asset(
-    compute_kind="python", group_name="sentimax_compute"
-)
-def st03_calc_sentiment(st02_tweet_json_to_bq: pd.DataFrame, bigquery: BigQueryResource) -> None:   #  , tweet_history: pd.DataFrame
+@asset(compute_kind="python", group_name="sentimax_compute")
+def st03_calc_sentiment(st02_tweet_json_to_bq: pd.DataFrame, bigquery: BigQueryResource) -> None:
     """
     Calculates sentiment from last hour of tweets in BQ
     """

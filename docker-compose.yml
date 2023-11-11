@@ -29,7 +29,6 @@ services:
   dagster_daemon:
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-project:develop
     volumes:
-      # - ${HOME}/.dbt:/mnt/dbt
       - ${HOME}/.config/gcloud:/mnt/gcloud
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
@@ -46,7 +45,7 @@ services:
       - dagster_user_code
 
   docker_postgres:
-    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-postgres:develop #postgres:13.3
+    image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-postgres:develop
     restart: always
     ports:
       - 5432:5432
@@ -81,13 +80,12 @@ services:
     ports:
       - '3010:3000'
     volumes:
-      - ./dagster-grafana/provisioning/:/etc/grafana/provisioning/ # Automatically configure datasources
+      - ./dagster-grafana/config/:/etc/grafana/ 
       - grafana-storage:/var/lib/grafana
-      - /mnt/grafana/:/etc/grafana/
     environment:
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SERVER_HTTP_PORT=3010
-      - GF_SERVER_PROTOCOL=http  #http 
+      - GF_SERVER_PROTOCOL=http
       - GF_SERVER_DOMAIN=app.sentimax.org
       - GF_SERVER_ROOT_URL=http://app.sentimax.org:3010/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
