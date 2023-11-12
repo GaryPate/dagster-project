@@ -52,3 +52,9 @@ Check out the [Dagster Cloud Documentation](https://docs.dagster.cloud) to learn
 
 
 gcloud auth configure-docker australia-southeast1-docker.pkg.dev
+
+dagster_gcp_key - bigquery service account
+
+application_default_credentials.json
+
+nginx reverse proxy
