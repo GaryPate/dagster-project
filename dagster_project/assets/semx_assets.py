@@ -52,16 +52,15 @@ def st01_tweets_to_json() -> None:
                                             , start_time = dt_start
                                             , end_time = dt_end
                                             , max_results=50
-                                            , lang="en"
                                             )
 
-    # tweets_en = tweepy.Cursor() 
     tweets_data = tweets_ro.data
 
     with open('/mnt/sentimax/tweet_data.json', 'w') as f:
         for tweet in tweets_data:
-            print(tweet)
-            f.write(json.dumps({'id': tweet.id, 'text': tweet.text}) + "\n")
+            if tweets_data.lang in ['en']:
+                print(tweet)
+                f.write(json.dumps({'id': tweet.id, 'text': tweet.text}) + "\n")
 
 
 @asset(compute_kind="python", group_name="sentimax_compute", deps=[st01_tweets_to_json])
