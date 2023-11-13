@@ -7,7 +7,7 @@ from dagster_gcp import BigQueryResource
 from textblob import TextBlob
 from dagster import asset
 import os
-from google.cloud.bigquery import LoadJobConfig 
+from google.cloud.bigquery import LoadJobConfig, WriteDisposition
 
 class Sentiment:
 
@@ -76,7 +76,7 @@ def st02_tweet_json_to_bq(bigquery: BigQueryResource) -> None:
 
     job_config = LoadJobConfig()
     job_config.write_disposition = (
-        bigquery.WriteDisposition.WRITE_TRUNCATE
+        WriteDisposition.WRITE_TRUNCATE
     ) 
 
     with bigquery.get_client() as client:
@@ -111,7 +111,7 @@ def st03_calc_sentiment(st02_tweet_json_to_bq: pd.DataFrame, bigquery: BigQueryR
 
     job_config = LoadJobConfig()
     job_config.write_disposition = (
-        bigquery.WriteDisposition.WRITE_TRUNCATE
+        WriteDisposition.WRITE_TRUNCATE
     ) 
 
     with bigquery.get_client() as client:
