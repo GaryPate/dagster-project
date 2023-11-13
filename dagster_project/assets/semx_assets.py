@@ -45,7 +45,7 @@ def st01_tweets_to_json() -> None:
     client = tweepy.Client(bearer_token)
     dt_end = datetime.now() - timedelta(hours=1)
     dt_start = datetime.now() - timedelta(hours=2)
-    qry = "Bitcoin -filter:retweets"
+    qry = "Bitcoin -is:retweet AND lang:en"
     tweets_ro = client.search_recent_tweets(query=qry
                                             , tweet_fields=['id','text','context_annotations','created_at','geo','author_id','lang','source']
                                             , expansions=["author_id", "geo.place_id"]
@@ -58,9 +58,8 @@ def st01_tweets_to_json() -> None:
 
     with open('/mnt/sentimax/tweet_data.json', 'w') as f:
         for tweet in tweets_data:
-            if tweets_data.lang in ['en']:
-                print(tweet)
-                f.write(json.dumps({'id': tweet.id, 'text': tweet.text}) + "\n")
+            print(tweet)
+            f.write(json.dumps({'id': tweet.id, 'text': tweet.text}) + "\n")
 
 
 @asset(compute_kind="python", group_name="sentimax_compute", deps=[st01_tweets_to_json])
