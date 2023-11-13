@@ -74,10 +74,16 @@ def st02_tweet_json_to_bq(bigquery: BigQueryResource) -> None:
 
     df = pd.DataFrame(json.loads(line) for line in data)
 
+    job_config = bigquery.LoadJobConfig()
+    job_config.write_disposition = (
+        bigquery.WriteDisposition.WRITE_TRUNCATE
+    ) 
+
     with bigquery.get_client() as client:
         job = client.load_table_from_dataframe(
             dataframe=df,
             destination="SENTIMAX.st02_tweet_json_to_bq",
+            job_config=job_config
         )
         job.result()
 
