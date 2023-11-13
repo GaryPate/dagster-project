@@ -16,6 +16,19 @@ Cloudbuild.yaml
 
 This controls the Google Gloudbuild CI/CD process. Retrieves GCP secrets and pushes built docker images to artefact repository.  
 
+Python code is located in dagster_project/assets/
+
+semx_assets.py contains the a basic Sentiment Class that returns and parses twitter sentiment using the Tweepy Client for the Twitter (X) API.
+
+The @asset decorator defines to Dagster, functions that return a materializable data source.
+
+get_dbt_assets.py is a context for Dagster that allows DBT models to load into the Dagster UI and framework in general.
+
+
+DBT
+
+The dbt component is a regular dbt project under dbt_project. The queries under models/sentimax_bq/ control loading and incrementing of tables between the host environment and Google BigQuery.
+
 
 
 gcloud auth configure-docker australia-southeast1-docker.pkg.dev
