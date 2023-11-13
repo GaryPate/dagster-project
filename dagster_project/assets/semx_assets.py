@@ -109,9 +109,15 @@ def st03_calc_sentiment(st02_tweet_json_to_bq: pd.DataFrame, bigquery: BigQueryR
 
     df = pd.DataFrame(sentiments, columns=['id', 'text', 'sentiment', 'load_datetime'])
 
+    job_config = bigquery.LoadJobConfig()
+    job_config.write_disposition = (
+        bigquery.WriteDisposition.WRITE_TRUNCATE
+    ) 
+
     with bigquery.get_client() as client:
         job = client.load_table_from_dataframe(
             dataframe=df,
             destination="SENTIMAX.st03_calc_sentiment",
+            job_config=job_config
         )
         job.result()
