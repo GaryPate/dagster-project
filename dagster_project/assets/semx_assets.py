@@ -45,7 +45,7 @@ def st01_tweets_to_json() -> None:
     client = tweepy.Client(bearer_token)
     dt_end = datetime.now() - timedelta(hours=1)
     dt_start = datetime.now() - timedelta(hours=2)
-    qry = "Bitcoin -is:retweet AND lang:en"
+    qry = "Bitcoin -is:retweet lang:en"
     tweets_ro = client.search_recent_tweets(query=qry
                                             , tweet_fields=['id','text','context_annotations','created_at','geo','author_id','lang','source']
                                             , expansions=["author_id", "geo.place_id"]
