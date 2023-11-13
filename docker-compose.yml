@@ -13,8 +13,10 @@ services:
     networks:
       - dagster_network
     command: >
-      sh -c "chmod +x ./up.sh &&
+      sh -c "cd bin &&
+             chmod +x ./up.sh &&
              . ./up.sh &&  
+             cd .. &&
              dagster-webserver -w workspace.yaml  --path-prefix /dagster -h 0.0.0.0 -p 3000"  
     # --read-only
     container_name:
