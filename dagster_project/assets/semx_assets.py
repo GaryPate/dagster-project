@@ -7,7 +7,7 @@ from dagster_gcp import BigQueryResource
 from textblob import TextBlob
 from dagster import asset
 import os
-
+from google.cloud.bigquery import LoadJobConfig, WriteDisposition
 
 class Sentiment:
 
@@ -45,17 +45,15 @@ def st01_tweets_to_json() -> None:
     client = tweepy.Client(bearer_token)
     dt_end = datetime.now() - timedelta(hours=1)
     dt_start = datetime.now() - timedelta(hours=2)
-    qry = "Bitcoin -filter:retweets"
+    qry = "Bitcoin -is:retweet lang:en"
     tweets_ro = client.search_recent_tweets(query=qry
                                             , tweet_fields=['id','text','context_annotations','created_at','geo','author_id','lang','source']
                                             , expansions=["author_id", "geo.place_id"]
                                             , start_time = dt_start
                                             , end_time = dt_end
-                                            , max_results=10
-                                            , lang="en"
+                                            , max_results=50
                                             )
 
-    # tweets_en = tweepy.Cursor() 
     tweets_data = tweets_ro.data
 
     with open('/mnt/sentimax/tweet_data.json', 'w') as f:
@@ -76,10 +74,16 @@ def st02_tweet_json_to_bq(bigquery: BigQueryResource) -> None:
 
     df = pd.DataFrame(json.loads(line) for line in data)
 
+    job_config = LoadJobConfig()
+    job_config.write_disposition = (
+        WriteDisposition.WRITE_TRUNCATE
+    ) 
+
     with bigquery.get_client() as client:
         job = client.load_table_from_dataframe(
             dataframe=df,
             destination="SENTIMAX.st02_tweet_json_to_bq",
+            job_config=job_config
         )
         job.result()
 
@@ -105,9 +109,15 @@ def st03_calc_sentiment(st02_tweet_json_to_bq: pd.DataFrame, bigquery: BigQueryR
 
     df = pd.DataFrame(sentiments, columns=['id', 'text', 'sentiment', 'load_datetime'])
 
+    job_config = LoadJobConfig()
+    job_config.write_disposition = (
+        WriteDisposition.WRITE_TRUNCATE
+    ) 
+
     with bigquery.get_client() as client:
         job = client.load_table_from_dataframe(
             dataframe=df,
             destination="SENTIMAX.st03_calc_sentiment",
+            job_config=job_config
         )
         job.result()

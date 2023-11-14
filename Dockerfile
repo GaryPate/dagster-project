@@ -38,7 +38,7 @@ COPY dbt_project ./dbt_project
 #COPY setup.cfg .
 #COPY setup.py .
 COPY requirements.txt .
-COPY up.sh .
+COPY bin/ bin/
 
 RUN apt-get update -y && apt-get install -y 
 RUN pip3 install -r requirements.txt
