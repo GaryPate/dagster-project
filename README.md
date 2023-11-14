@@ -11,8 +11,6 @@ Currently the Dagster UI and a Grafana dashboard are available from these two en
 
 <BR>
 
-<BR>
-
 ## Description of components
 
 ### Cloudbuild
@@ -34,7 +32,7 @@ The Dagster deployment uses several containers that are specified in docker-comp
 
 **Python code** is located in `dagster_project/assets/`
 
-- `semx_assets.py` contains the a basic Sentiment Class that returns and parses twitter sentiment using the Tweepy Client for the Twitter (X) API. The @asset decorator defines to Dagster, functions that return a materializable data source.
+- `semx_assets.py` contains the a basic Sentiment Class that returns and parses twitter sentiment using the Tweepy Client for the Twitter (X) API. The `@asset` decorator defines to Dagster, functions that return a materializable data source.
 
 - `get_dbt_assets.py` is a context for Dagster that allows DBT models to load into the Dagster UI and framework in general.
 
@@ -56,7 +54,7 @@ Nginx is used as a reverse proxy and configured via `nginx/conf/nginx.conf`. Wit
 
 ### Serice account and GCP secret requirements
 
-During the Cloudbuild hook the following secrets are retrieved from GCP and saved within the containers via `cloudbuild.yaml`
+During the Cloudbuild build process, the following secrets are retrieved from GCP and saved within the Docker images specified `cloudbuild.yaml`.
 
 - `DAGSTER_POSTGRES_USER` is the user for the Docker postgres container
 - `DAGSTER_POSTGRES_PASSWORD` is the password for the Docker postgres container
