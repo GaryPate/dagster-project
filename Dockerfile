@@ -25,7 +25,7 @@ ENV GCP_PROJECT=ml-dev-403200
 
 WORKDIR $DAGSTER_HOME
 
-COPY dagster.yaml workspace.yaml requirements.txt .
+COPY dagster.yaml workspace.yaml requirements.txt $DAGSTER_HOME
 COPY dagster_project ./dagster_project
 COPY dbt_project ./dbt_project
 COPY bin/ bin/
