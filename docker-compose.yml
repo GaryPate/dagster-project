@@ -14,8 +14,8 @@ services:
       - dagster_network
     command: >
       sh -c "cd bin &&
-             chmod +x ./up.sh &&
-             . ./up.sh &&  
+             chmod +x ./up-dagster.sh &&
+             . ./up-dagster.sh &&  
              cd .. &&
              dagster-webserver -w workspace.yaml --read-only --path-prefix /dagster -h 0.0.0.0 -p 3000"  
     container_name:
@@ -39,8 +39,8 @@ services:
       - dagster_network
     command: >
       sh -c "cd bin &&
-             chmod +x ./up.sh &&
-             . ./up.sh &&  
+             chmod +x ./up-dagster.sh &&
+             . ./up-dagster.sh &&  
              cd .. &&  
              dagster-daemon run "
     restart: on-failure
@@ -69,8 +69,8 @@ services:
       - 4000:4000
     command: >
       sh -c "cd bin &&
-             chmod +x ./up.sh &&
-             . ./up.sh &&  
+             chmod +x ./up-dagster.sh &&
+             . ./up-dagster.sh &&  
              cd .. &&
              dagster api grpc -h 0.0.0.0 -p 4000 -f /opt/dagster/dagster-project/dagster_project/__init__.py"
     volumes:
@@ -86,7 +86,7 @@ services:
     ports:
       - '3010:3000'
     volumes:
-      - ./dagster-grafana/config/:/etc/grafana/ 
+      - ./dagster_grafana/config/:/etc/grafana/ 
       - grafana-storage:/var/lib/grafana
     environment:
       - GF_USERS_ALLOW_SIGN_UP=false
@@ -97,6 +97,10 @@ services:
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
     networks:
       - dagster_network
+    command: >
+      sh -c "cd bin &&
+             chmod +x ./up-grafana.sh &&
+             . ./up-grafana.sh &&  cd ..
   
   nginx:
     image: australia-southeast1-docker.pkg.dev/ml-dev-403200/dagster-docker/dagster-nginx:develop
