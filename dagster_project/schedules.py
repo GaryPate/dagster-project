@@ -8,7 +8,7 @@ HOURLY_PLUS = " {} * * * * "
 sentimax_compute_schedule = ScheduleDefinition(job=sentimax_compute_job, 
                                                cron_schedule=HOURLY_PLUS.format('0'),
                                                execution_timezone="Australia/Sydney",
-                                               default_status=DefaultScheduleStatus.RUNNING
+                                               #default_status=DefaultScheduleStatus.RUNNING
                                                )
 
 dbt_assets_select = build_dbt_asset_selection(
@@ -20,5 +20,5 @@ sentimax_dbt_assets_schedule = ScheduleDefinition(
     job=define_asset_job("dbt_assets_select", selection=dbt_assets_select),
     cron_schedule=HOURLY_PLUS.format('7'),
     execution_timezone="Australia/Sydney",
-    default_status=DefaultScheduleStatus.RUNNING
+    #default_status=DefaultScheduleStatus.RUNNING
 )
