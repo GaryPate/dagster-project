@@ -4,11 +4,6 @@ This deployment uses the [Dagster](https://docs.dagster.io/getting-started) fram
 
 While deployable using `docker compose up`, it is intended to be viewed as sample code. Full deployment requires subscription to the Basic Twitter API and Google Cloud Platform along with associated serice accounts. 
 
-Currently the Dagster UI and a Grafana dashboard are available from these two endpoints.
-
-[http://app.sentimax.org/grafana/dashboards](http://app.sentimax.org/grafana/dashboards) <BR>
-[http://app.sentimax.org/dagster](http://app.sentimax.org/dagster)
-
 <BR>
 
 ## Description of components
